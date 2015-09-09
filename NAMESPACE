@@ -1,0 +1,7 @@
+import(methods, hydroGOF)
+
+export(processSamplePoints, convertCFSRTo)
+
+exportMethods("getAnomalies", "plotCFSRStation")
+
+exportClasses("CFSRStationData", "CFSRStationDataExtra")

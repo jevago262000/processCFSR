@@ -1,0 +1,184 @@
+% Fri Aug 7 2015
+
+\documentclass[nogin,a4paper]{article}
+
+%\usepackage[OT1]{fontenc}
+
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{Sweave}
+\usepackage[utf8]{inputenc}
+\newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\code}[1]{{\tt #1}}
+
+\title{\bf Package 'processCFSR' }
+
+\author{
+\href{mailto:jefferson.valencia.gomez@gmail.com}{Jefferson Valencia G\'{o}mez}
+}
+\date{\small \today }
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+% \VignetteIndexEntry{ processCFSR }
+\maketitle
+
+\begin{abstract}
+Tools to download CFSR datasets from \href{http://www.cfsr.tamu-cornell.drfuka.org/swat-cfsr-v03.pl}{drfuka.org} service and convert them to SWAT and WGN Excel Macro inputs format\footnote{For more information about these formats, please refer to \href{http://swat.tamu.edu/}{SWAT Model webpage}}. Also, It allows to plot and analyse anomalies between weather stations and CFSR data.
+\end{abstract}
+
+\tableofcontents
+
+
+\section{Function "processSamplePoints"}
+
+This function allows user to download CFSR datasets and cut them based on the start and end dates
+defined in the CSV input file. CSV file with the id's, coordinates (Lat and Long) and start and end dates of the points to be downloaded. See \code{extdata/SamplePoints.csv} as an example file.
+
+\vspace*{1\baselineskip}
+
+This function adds rows with \code{NA} values where missing data.
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+
+<<tidy=FALSE, eval=FALSE>>=
+CSVFile = system.file("extdata", "SamplePoints.csv", package = "processCFSR")
+tmpDir = tempdir()
+processSamplePoints(CSVFile, tmpDir)
+@
+\end{footnotesize}
+
+
+\section{Function "convertCFSRTo"}
+
+\vspace*{1\baselineskip}
+
+Function to convert CFSR datasets downloaded by using \code{processSamplePoints} function to either SWAT Model or WGN Excel Macro input files format.
+
+\vspace*{1\baselineskip}
+
+\code{CSVspath} is the folder path where stored all the CSV files downloaded by using \code{processSamplePoints} function. See \code{extdata/CFSRData.csv} as an example file.
+
+\vspace*{1\baselineskip}
+
+If \code{format} is not defined, the CFSR datasets are converted to SWAT Model input files format. Two possible options to be defined \code{"SWAT"} or \code{"WGN"}. If either \code{inputStartDate} or \code{inputStartDate} are not defined, the start date or end date are read from the input files.
+
+\vspace*{1\baselineskip}
+
+In the \code{CSVspath} folder it will be created another folder named either SWAT or WGN with all the created TXT files that are ready to enter to SWAT Model or WGN Excel Macro.
+
+\vspace*{1\baselineskip}
+
+This function adds rows with -99 values where missing data. Start and end dates have to be defined with format \code{"m/d/Y"}.
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<tidy=FALSE, eval=FALSE>>=
+convertCFSRTo(CSVspath, format = "SWAT", inputStartDate = FALSE, inputEndDate = FALSE)
+@
+\end{footnotesize}
+
+
+\section{Class "CFSRStationData"}
+
+Objects with this class store CFSR and Station data to be computed by \code{getAnomalies} function. Each pair of values must refer to the same day.
+
+\vspace*{1\baselineskip}
+
+Objects can be created by calls of the form \code{new("CFSRStationData", CFSR, Station)}.
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<keep.source=TRUE>>=
+library("processCFSR")
+a = new("CFSRStationData", CFSR = 1:10, Station = 11:20)
+a
+@
+\end{footnotesize}
+
+
+\section{Class "CFSRStationDataExtra"}
+
+Objects with this class store CFSR, Station and Anomalies data to be showed on a plot by \code{plotCFSRStation} function.
+
+\vspace*{1\baselineskip}
+
+Objects can be created by calls of the form \code{new("CFSRStationDataExtra", CFSR, Station, Anomaly)}.
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<tidy=FALSE>>=
+CFSR = 1:10
+Station = 11:20
+Anomaly = Station - CFSR
+a = new("CFSRStationDataExtra", CFSR = CFSR, Station = Station, Anomaly = Anomaly)
+a
+@
+\end{footnotesize}
+
+
+\section{Data "CFSRStationSampleData"}
+
+Sample dataset of precipitation to be used in the function \code{getAnomalies} and then plot it by using \code{plotCFSRStation}. A data frame with 10748 observations on the following 2 variables:
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<tidy=FALSE>>=
+data(SampleData)
+CFSR = CFSRStationSampleData$CFSR
+Station = CFSRStationSampleData$Station
+CFSRStationSampleData[1:10,]
+@
+\end{footnotesize}
+
+
+\section{Method "getAnomalies"}
+
+This method calculates the anomalies (deltas) subtracting CFSR values from weather station values. It removes all the pairs of data with any NA value.
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<tidy=FALSE>>=
+a = new("CFSRStationData", CFSR = 1:10, Station = 11:20)
+b = getAnomalies(a)
+b
+@
+\end{footnotesize}
+
+
+\section{Method "plotCFSRStation"}
+
+This method plots the anomalies (deltas) which were obtained subtracting CFSR values from weather
+station values. A scatter diagram and histogram of anomalies are showed on the plot for the variable
+defined as an input.
+
+\vspace*{1\baselineskip}
+
+\begin{footnotesize}
+<<tidy=FALSE>>=
+data(SampleData)
+CFSR = CFSRStationSampleData$CFSR
+Station = CFSRStationSampleData$Station
+a = new("CFSRStationData", CFSR = CFSR, Station = Station)
+b = getAnomalies(a)
+@
+\end{footnotesize}
+
+\begin{figure}
+\begin{center}
+\begin{footnotesize}
+<<fig=TRUE,figs.only=TRUE,results=hide,height=5.2,width=5.2>>=
+plotCFSRStation(b, variable = "PCP")
+@
+\end{footnotesize}
+\end{center}
+\caption{ Plot of anomalies between CFSR and weather station precipitation data }
+\label{fig:anomalies}
+\end{figure}
+
+\end{document}
