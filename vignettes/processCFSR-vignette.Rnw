@@ -23,7 +23,7 @@
 \maketitle
 
 \begin{abstract}
-Tools to download CFSR datasets from \href{http://www.cfsr.tamu-cornell.drfuka.org/swat-cfsr-v03.pl}{drfuka.org} service and convert them to SWAT and WGN Excel Macro inputs format\footnote{For more information about these formats, please refer to \href{http://swat.tamu.edu/}{SWAT Model webpage}}. Also, It allows to plot and analyse anomalies between weather stations and CFSR data.
+Tools to download CFSR datasets from \href{http://www.cfsr.tamu-cornell.drfuka.org/swat-cfsr-v03.pl}{drfuka.org} service and convert them to SWAT and WGN Excel Macro inputs format\footnote{For more information about these formats, please refer to \href{http://swat.tamu.edu/}{SWAT Model webpage}}. Also, it allows users to plot and analyze anomalies between weather stations and CFSR datasets.
 \end{abstract}
 
 \tableofcontents

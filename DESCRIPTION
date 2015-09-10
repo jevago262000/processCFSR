@@ -2,9 +2,9 @@ Package: processCFSR
 Type: Package
 Title: Process CFSR datasets
 Version: 1.0
-Date: 2015-08-09
+Date: 2015-09-10
 Author: Jefferson Valencia Gomez
 Imports: methods, hydroGOF
-Maintainer: Jefferson Valencia Gomez <jefferson.valencia.Gomez@gmail.com>
-Description: Tools to download CFSR datasets and convert to SWAT and WGN Excel Macro inputs format. Also, It allows to plot and analyse anomalies between weather stations and CFSR data.
+Maintainer: Jefferson Valencia Gomez <jefferson.valencia.gomez@gmail.com>
+Description: Tools to download CFSR datasets and convert to SWAT and WGN Excel Macro inputs format. Also, it allows users to plot and analyze anomalies between weather stations and CFSR datasets.
 License: CC BY-NC-SA 4.0
