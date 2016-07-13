@@ -62,7 +62,7 @@ setMethod("getAnomalies",
             #Remove the lines in this dataframe that contain NAs across all columns
             theObject = theObject[complete.cases(theObject),]
             
-            theObject$Anomaly = theObject$Station - theObject$CFSR
+            theObject$Anomaly = theObject$CFSR - theObject$Station 
             finalData = new("CFSRStationDataExtra", CFSR = theObject$CFSR, Station = theObject$Station, Anomaly = theObject$Anomaly)
             return(finalData)
           }
